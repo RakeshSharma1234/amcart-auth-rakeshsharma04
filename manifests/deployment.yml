@@ -56,10 +56,24 @@ spec:
       containers:
        - name: auth-service
          image: us-central1-docker.pkg.dev/nagp-amcart-rakesh/nagp-amcart-repo/auth-service:v1
-         ports:
-         - containerPort: 8083
          envFrom:
             - configMapRef:
                 name: auth-config
             - secretRef:
                 name: auth-secret
+         ports:
+         - containerPort: 8083
+         livenessProbe:
+              httpGet:
+                path: /actuator/health
+                port: 8083
+              initialDelaySeconds: 30
+              periodSeconds: 30
+              failureThreshold: 3
+         readinessProbe:
+              httpGet:
+                path: /actuator/health
+                port: 8083
+              initialDelaySeconds: 15
+              periodSeconds: 30
+              failureThreshold: 3

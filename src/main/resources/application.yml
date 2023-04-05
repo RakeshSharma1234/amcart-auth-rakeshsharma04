@@ -1,0 +1,15 @@
+spring:
+   application:
+      name: AuthService
+server:
+    port: 8083
+
+keycloak:
+  client-id: amcart-client
+  client-secret: ${clientSecret}
+  user-info-uri: ${keycloak-server-url}/realms/AMCart/protocol/openid-connect/userinfo
+  token-uri: ${keycloak-server-url}/realms/AMCart/protocol/openid-connect/token
+
+management:
+  endpoints:
+    enabled-by-default: true
