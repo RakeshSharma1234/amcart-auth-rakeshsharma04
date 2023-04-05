@@ -1,0 +1,65 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nagp-amcart-namespace
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: auth-np-service
+  namespace: nagp-amcart-namespace
+spec:
+  type: NodePort
+  selector:
+    app: auth-service
+  ports:
+  - port: 8083
+    targetPort: 8083
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auth-config
+  namespace: nagp-amcart-namespace
+data:
+  keycloak-server-url: 'http://keycloak-service.nagp-amcart-namespace.svc.cluster.local:8080'
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: auth-secret
+  namespace: nagp-amcart-namespace
+type: Opaque
+data:
+  clientSecret: ZDJsc2EwVEdrc0Vhakx4U0Vocmw3Z214T3FobFRMeEQ=
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-deployment
+  namespace: nagp-amcart-namespace
+spec:
+  selector:
+      matchLabels:
+        app: auth-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: auth-service
+    spec:
+      containers:
+       - name: auth-service
+         image: us-central1-docker.pkg.dev/nagp-amcart-rakesh/nagp-amcart-repo/auth-service:v1
+         ports:
+         - containerPort: 8083
+         envFrom:
+            - configMapRef:
+                name: auth-config
+            - secretRef:
+                name: auth-secret
