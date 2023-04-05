@@ -25,7 +25,7 @@ metadata:
   name: auth-config
   namespace: nagp-amcart-namespace
 data:
-  keycloak-server-url: 'http://keycloak-service.nagp-amcart-namespace.svc.cluster.local:8080'
+  keycloak-server-url: 'http://keycloak-service.nagp-amcart-namespace.svc.cluster.local'
 
 ---
 apiVersion: v1
