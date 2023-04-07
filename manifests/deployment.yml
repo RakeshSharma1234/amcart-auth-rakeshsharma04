@@ -25,7 +25,7 @@ metadata:
   name: auth-config
   namespace: nagp-amcart-namespace
 data:
-  keycloak-server-url: 'http://keycloak-service.nagp-amcart-namespace.svc.cluster.local'
+  keycloak-server-url: 'http://keycloak-lb-service.nagp-amcart-namespace.svc.cluster.local'
 
 ---
 apiVersion: v1
@@ -56,6 +56,7 @@ spec:
       containers:
        - name: auth-service
          image: us-central1-docker.pkg.dev/nagp-amcart-rakesh/nagp-amcart-repo/auth-service:v1
+         imagePullPolicy: Always
          envFrom:
             - configMapRef:
                 name: auth-config
