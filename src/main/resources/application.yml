@@ -13,3 +13,7 @@ keycloak:
 management:
   endpoints:
     enabled-by-default: true
+    
+logging:
+  level:
+    '[org.springframework.boot.cloud]': debug
